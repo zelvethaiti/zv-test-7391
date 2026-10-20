@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZELVET — Un tout nouveau monde s'offre à vous</title>
+<meta name="description" content="ZELVET : plateforme de financement participatif pour soutenir des projets en Haïti.">
+<style>
+:root{--bg:#fffdf8;--panel:#fff;--panel2:#f3f8f4;--green:#167447;--green-dark:#105b37;--green-soft:#e9f5ed;--gold:#b58a2b;--text:#17211b;--muted:#5e6c63;--border:#e6e0cf;--shadow:0 14px 38px rgba(20,60,38,.10)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.65}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button,.btn{cursor:pointer;border:0;border-radius:12px;padding:12px 17px;font-weight:700;display:inline-block;text-align:center;transition:transform .18s,box-shadow .18s,background .18s}
+button:hover,.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 6px 16px rgba(22,116,71,.16)}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-outline{border:1px solid var(--green);color:var(--green-dark);background:#fff}
+.btn-outline:hover{background:var(--green-soft)}
+.container{width:min(1100px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}
+.topbar{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-size:1.36rem;font-weight:900;letter-spacing:2px;color:var(--text)}
+.brand-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,var(--green),var(--green-dark));color:#f3d994;font-size:1.35rem;box-shadow:inset 0 0 0 2px rgba(226,190,100,.8)}
+.brand small{display:block;font-size:.59rem;color:var(--muted);letter-spacing:1px;font-weight:700}
+nav{display:flex;gap:17px;align-items:center}
+nav a{color:var(--muted);font-size:.9rem;font-weight:600}
+nav a:hover{color:var(--green)}
+nav a.btn-primary{color:#fff}
+.menu-button{display:none;background:var(--green-soft);color:var(--green-dark)}
+.hero{padding:78px 0 66px;background:radial-gradient(ellipse at 88% 8%,rgba(181,138,43,.12),transparent 32%),radial-gradient(ellipse at 8% 20%,rgba(22,116,71,.10),transparent 42%),linear-gradient(180deg,#fbfdfb,#fff);border-bottom:1px solid #edf2ee}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.eyebrow{color:var(--green);text-transform:uppercase;font-weight:800;letter-spacing:1.8px;font-size:.76rem}
+.eyebrow::before{content:"";display:inline-block;width:23px;height:2px;background:var(--gold);vertical-align:middle;margin:0 9px 3px 0}
+h1{font-size:clamp(2.5rem,6vw,4.35rem);line-height:1.06;letter-spacing:-1.8px;margin:16px 0}
+h1 span{color:var(--green)}
+h2{font-size:clamp(1.7rem,4vw,2.45rem);line-height:1.22;letter-spacing:-.5px}
+h3{line-height:1.35}
+p{color:var(--muted)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+.hero-card{position:relative;overflow:hidden;border:1px solid #d8e7dc;border-radius:26px;background:linear-gradient(145deg,#fff,#f2f8f3);padding:32px;box-shadow:var(--shadow)}
+.hero-card::after{content:"";position:absolute;width:145px;height:145px;border:1px solid rgba(181,138,43,.24);border-radius:50%;right:-60px;top:-65px}
+.hero-symbol{width:76px;height:76px;border-radius:23px;display:grid;place-items:center;background:var(--green);color:#f3d994;border:2px solid #d7b45c;font-size:2.5rem;margin-bottom:22px;box-shadow:0 10px 24px rgba(22,116,71,.16)}
+.quick-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
+.quick-links a{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;font-size:.8rem;font-weight:700;box-shadow:0 4px 12px rgba(25,60,40,.035)}
+.quick-links a:hover{border-color:var(--gold);background:#fffdf8}
+section{padding:66px 0}
+section:nth-of-type(even){background:#fbfdfb}
+.section-head{max-width:700px;margin-bottom:30px}
+.section-head h2{margin:12px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:19px;padding:24px;box-shadow:0 7px 22px rgba(20,60,38,.035);transition:transform .2s,box-shadow .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#c5d9ca}
+.card-icon{width:49px;height:49px;display:grid;place-items:center;border-radius:15px;background:var(--green-soft);color:var(--green);border:1px solid #d8eadd;font-size:1.45rem}
+.card h3{margin:16px 0 7px}
+.card p{font-size:.93rem}
+.card a{color:var(--green);font-weight:800}
+.help-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.help-item{display:flex;gap:15px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:17px;padding:21px;box-shadow:0 5px 18px rgba(20,60,38,.03)}
+.help-item .card-icon{flex-shrink:0}
+.help-item h3{margin:0 0 5px;font-size:1rem}
+.help-item p{margin:0 0 13px;font-size:.88rem}
+.help-item .btn{font-size:.88rem;padding:10px 12px}
+.support{border:1px solid #d9c58c;border-radius:25px;padding:38px;text-align:center;background:radial-gradient(ellipse at top right,rgba(181,138,43,.13),transparent 42%),linear-gradient(135deg,#f5faf6,#fffdf7);box-shadow:var(--shadow)}
+.support p{max-width:610px;margin:12px auto 22px}
+.form-wrap{max-width:720px;padding:26px;background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
+label{display:block;margin:14px 0 6px;font-weight:700;font-size:.9rem;color:var(--text)}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid #cbdacf;border-radius:11px;background:#fff;color:var(--text);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,116,71,.10)}
+textarea{min-height:110px;resize:vertical}
+.notice{border-left:3px solid var(--gold);padding:12px 15px;background:#fcf8ec;color:#655b43;font-size:.88rem;border-radius:6px}
+details{padding:17px 19px;border:1px solid var(--border);border-radius:13px;margin-bottom:10px;background:#fff}
+summary{cursor:pointer;font-weight:750}
+summary::marker{color:var(--gold)}
+details p{margin-bottom:0}
+footer{border-top:1px solid var(--border);padding:34px 0;background:#f7faf7}
+.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-links{display:flex;flex-wrap:wrap;gap:16px;font-size:.9rem}
+.footer-links a{color:var(--muted)}
+.footer-links a:hover{color:var(--green)}
+.small{font-size:.8rem}
+.status{margin-top:14px;color:var(--green-dark)}
+:focus-visible{outline:3px solid rgba(181,138,43,.65);outline-offset:3px}
+.fab-wrap{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.fab{display:inline-flex;align-items:center;gap:8px;padding:13px 18px;border-radius:999px;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,.22)}
+.fab.wa{background:#25D366}
+.fab.call{background:var(--green)}
+.to-top{position:fixed;left:16px;bottom:16px;z-index:20;width:46px;height:46px;border-radius:50%;padding:0;background:var(--green-dark);color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.22);display:none}
+.to-top.show{display:block}
+.social{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.social a{border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:.85rem;font-weight:700;color:var(--green-dark);background:#fff}
+.social a:hover{border-color:var(--gold)}
+@media(max-width:850px){nav{gap:11px}nav a{font-size:.83rem}.hero-grid{gap:28px}}
+@media(max-width:760px){
+.menu-button{display:block}
+nav{display:none;position:absolute;top:78px;left:0;right:0;padding:18px 4%;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 12px 18px rgba(20,60,38,.08);flex-direction:column;align-items:stretch}
+nav.open{display:flex}
+nav a{padding:8px 0;font-size:.95rem}
+nav a.btn-primary{padding:12px 16px}
+.hero{padding-top:49px}
+.hero-grid{grid-template-columns:1fr;gap:28px}
+.hero-card{padding:25px}
+.cards,.help-grid{grid-template-columns:1fr}
+.quick-links{grid-template-columns:repeat(2,1fr)}
+.support{padding:27px 19px}
+.form-wrap{padding:19px}
+section{padding:52px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ===== THEME MIXTE : nwa+lò anlè/anba, klè nan mitan ===== */
+header{background:rgba(10,10,10,.96);border-bottom:1px solid #3a3118}
+.brand{color:#d4af37}
+.brand-mark{background:linear-gradient(145deg,#0a0a0a,#12251b);color:#d4af37;box-shadow:inset 0 0 0 2px #d4af37}
+nav a{color:#cfc7b0}
+nav a:hover{color:#d4af37}
+nav a.btn-primary,.support .btn-primary{background:linear-gradient(135deg,#c9a227,#f0d27a);color:#0a0a0a;box-shadow:0 6px 18px rgba(212,175,55,.25)}
+.menu-button{background:#14130f;color:#d4af37;border:1px solid #3a3118}
+.hero{background:radial-gradient(ellipse at 88% 8%,rgba(212,175,55,.16),transparent 34%),radial-gradient(ellipse at 8% 25%,rgba(22,116,71,.10),transparent 44%),linear-gradient(180deg,#fffdf8,#fff);border-bottom:1px solid #eadfbf}
+.support .eyebrow{color:#d4af37}
+.support p{color:#b5ad98}
+.hero-card{background:linear-gradient(145deg,#fff,#f6f1e1);border-color:#e6d9a8}
+.support h2{color:#f6f1e3}
+.quick-links a{background:#fff;border-color:#e6e0cf;color:var(--text)}
+.quick-links a:hover{background:#fffdf8;border-color:#b58a2b;color:var(--green-dark)}
+.card{border-top:3px solid #d4af37}
+.card:hover{border-color:#b58a2b}
+.support{background:linear-gradient(135deg,#0a0a0a,#0e1a13);border:1px solid #6b5a1f}
+footer{background:#070707;border-top:1px solid #3a3118}
+footer strong{color:#d4af37}
+footer p,.footer-links a{color:#b5ad98}
+.footer-links a:hover{color:#d4af37}
+.social a{background:#12110c;border-color:#3a3118;color:#d4af37}
+.to-top{background:#d4af37;color:#0a0a0a}
+@media(max-width:760px){nav{background:#0a0a0a;border-bottom:1px solid #3a3118}}
+.bar{height:8px;background:#e9f5ed;border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;background:var(--green)}
+.don{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.don input{flex:1;min-width:90px;padding:10px}
+.don button{padding:10px 14px}
+dialog{border:1px solid #d4af37;border-radius:20px;padding:0;width:min(560px,92vw);max-height:85vh;color:var(--text);background:#fff;overflow:hidden}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+.dlg-head{background:#0a0a0a;color:#d4af37;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.dlg-head button{background:transparent;color:#d4af37;padding:4px 10px;font-size:1.1rem}
+.dlg-body{padding:6px 20px 18px;overflow:auto;max-height:68vh}
+.dlg-body h4{margin:16px 0 6px;color:var(--green-dark)}
+.dlg-body ul{margin:0;padding-left:18px;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container topbar">
+    <a class="brand" href="#accueil"><span class="brand-mark">Z</span><span>ZELVET<small>HAÏTI</small></span></a>
+    <button class="menu-button" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <nav id="nav">
+      <a href="#services">Services</a>
+      <a href="#aide">Aide</a>
+      <a href="#faq">FAQ</a>
+      <a href="#projets">Projets</a>
+      <a href="#compte">Mon compte</a>
+      <a href="#contact" class="btn btn-primary">Nous contacter</a>
+    </nav>
+  </div>
+</header>
+
+<main id="accueil">
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Financement participatif</div>
+        <h1>Un tout <span>nouveau monde</span> s'offre à vous</h1>
+        <p>ZELVET est une plateforme de financement participatif : soutenez un projet en Haïti où que vous soyez, ou lancez le vôtre et recevez l'appui de donateurs du monde entier.</p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Comment ça marche</a>
+          <a href="#contact" class="btn btn-outline">Nous écrire</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-symbol">Z</div>
+        <h3>Accès rapide</h3>
+        <p>Trouvez en un clic ce dont vous avez besoin.</p>
+        <div class="quick-links">
+          <a href="#services">Services</a>
+          <a href="#aide">Aide</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Comment ça marche</div>
+        <h2>Trois étapes simples</h2>
+        <p>Un projet, une communauté, un impact.</p>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="card-icon">🌱</div><h3>1. Lancez un projet</h3><p>Présentez votre projet, votre objectif et le montant dont vous avez besoin.</p><a href="#contact">En savoir plus →</a></div>
+        <div class="card"><div class="card-icon">📚</div><h3>2. Partagez-le</h3><p>Diffusez votre campagne auprès de vos proches et de la diaspora.</p><a href="#contact">En savoir plus →</a></div>
+        <div class="card"><div class="card-icon">🤝</div><h3>3. Recevez des dons</h3><p>Des donateurs de partout peuvent soutenir votre projet, petit don ou grand.</p><a href="#contact">En savoir plus →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projets">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Projets</div>
+        <h2>Soutenez un projet</h2>
+        <p id="projStatus">Chargement des projets…</p>
+      </div>
+      <div class="cards" id="projList"></div>
+    </div>
+  </section>
+
+  <section id="compte">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Mon compte</div>
+        <h2>Lancez votre projet</h2>
+        <p>Créez un compte pour présenter un projet. Chaque projet est vérifié avant d'être publié.</p>
+      </div>
+      <div class="form-wrap" id="authBox">
+        <label for="aNom">Nom (pour un nouveau compte)</label>
+        <input id="aNom" autocomplete="name">
+        <label for="aEmail">Courriel</label>
+        <input id="aEmail" type="email" autocomplete="email">
+        <label for="aPass">Mot de passe (6 caractères minimum)</label>
+        <input id="aPass" type="password" autocomplete="current-password">
+        <div class="hero-actions">
+          <button class="btn-primary" id="btnLogin" type="button">Se connecter</button>
+          <button class="btn-outline" id="btnSignup" type="button">Créer un compte</button>
+        </div>
+        <p class="small">En créant un compte, vous acceptez le <a href="#reglement"><strong>règlement de ZELVET</strong></a>. La fraude et les faux projets entraînent un bannissement.</p>
+        <p class="status" id="aStatus" role="status"></p>
+      </div>
+      <div class="form-wrap" id="projBox" style="display:none">
+        <p id="who"></p>
+        <label for="pTitre">Titre du projet</label>
+        <input id="pTitre">
+        <label for="pResume">Résumé (une phrase)</label>
+        <input id="pResume">
+        <label for="pHist">Votre histoire</label>
+        <textarea id="pHist"></textarea>
+        <label for="pObj">Objectif à atteindre</label>
+        <input id="pObj" type="number" min="1">
+        <label for="pDev">Devise</label>
+        <select id="pDev"><option>USD</option><option>HTG</option></select>
+        <label for="pDate">Date limite (facultatif)</label>
+        <input id="pDate" type="date">
+        <div class="hero-actions">
+          <button class="btn-primary" id="btnProj" type="button">Soumettre le projet</button>
+          <button class="btn-outline" id="btnOut" type="button">Déconnexion</button>
+        </div>
+        <p class="status" id="pStatus" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="aide">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Besoin d'aide ?</div>
+        <h2>Comment pouvons-nous vous aider ?</h2>
+      </div>
+      <div class="help-grid">
+        <div class="help-item"><div class="card-icon">❓</div><div><h3>Poser une question</h3><p>Écrivez-nous et recevez une réponse rapide.</p><a href="#contact" class="btn btn-outline">Écrire</a></div></div>
+        <div class="help-item"><div class="card-icon">📝</div><div><h3>Faire une demande</h3><p>Expliquez votre besoin, nous revenons vers vous.</p><a href="#contact" class="btn btn-outline">Demander</a></div></div>
+        <div class="help-item"><div class="card-icon">📖</div><div><h3>Consulter la FAQ</h3><p>Les réponses aux questions les plus fréquentes.</p><a href="#faq" class="btn btn-outline">Voir la FAQ</a></div></div>
+        <div class="help-item"><div class="card-icon">💬</div><div><h3>Donner un avis</h3><p>Vos suggestions nous aident à nous améliorer.</p><a href="#contact" class="btn btn-outline">Partager</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="support">
+        <div class="eyebrow">Soutien</div>
+        <h2>Ensemble, on va plus loin</h2>
+        <p>Chaque don compte. ZELVET est bientôt disponible : contactez-nous pour être prévenu(e) du lancement.</p>
+        <a href="#contact" class="btn btn-primary">Parler à l'équipe</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reglement">
+    <div class="container">
+      <div class="support">
+        <div class="eyebrow">Règlement</div>
+        <h2>Le règlement de ZELVET</h2>
+        <p>Les règles qui protègent les donateurs et les vrais projets.</p>
+        <button class="btn-primary" id="regOpen" type="button">Lire le règlement</button>
+      </div>
+      <dialog id="regDlg">
+        <div class="dlg-head"><strong>Règlement de ZELVET</strong><button type="button" id="regClose" aria-label="Fermer">✕</button></div>
+        <div class="dlg-body">
+          <h4>⛔ Ce qui est interdit</h4>
+          <ul><li>Créer un faux projet ou une fausse campagne</li><li>Utiliser une fausse identité, de fausses photos ou une fausse histoire</li><li>Utiliser les fonds autrement que comme annoncé</li><li>Créer plusieurs comptes pour contourner une sanction</li><li>Menacer, harceler ou publier du contenu illégal</li></ul>
+          <h4>🔎 Vérifications</h4>
+          <ul><li>Chaque projet est examiné avant d'être publié</li><li>ZELVET peut demander des preuves à tout moment</li><li>Tout projet peut être signalé par la communauté</li></ul>
+          <h4>⚖️ Sanctions</h4>
+          <ul><li>Projet suspendu ou retiré pendant l'examen</li><li>Fraude ou faux projet : <strong>bannissement définitif</strong> du compte</li><li>Les dons concernés peuvent être bloqués ou remboursés selon l'examen</li></ul>
+        </div>
+      </dialog>
+    </div>
+  </section>
+
+  <section id="securite">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Sécurité</div>
+        <h2>Remboursement, erreur ou fraude</h2>
+        <p>Un problème avec un don ou un projet ? Dites-le nous. Chaque demande est examinée.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="btnRem" type="button">Demander un remboursement</button>
+          <button class="btn-outline" id="btnErr" type="button">Signaler une erreur ou une fraude</button>
+        </div>
+      </div>
+      <div class="form-wrap" id="remBox" style="display:none">
+        <h3>Demande de remboursement</h3>
+        <label for="mEmail">Courriel</label>
+        <input id="mEmail" type="email">
+        <label for="mRef">Projet ou référence du don</label>
+        <input id="mRef">
+        <label for="mMont">Montant (facultatif)</label>
+        <input id="mMont" type="number" min="0" step="any">
+        <label for="mRaison">Raison</label>
+        <textarea id="mRaison"></textarea>
+        <div class="hero-actions"><button class="btn-primary" id="sendRem" type="button">Envoyer la demande</button></div>
+        <p class="status" id="remStatus" role="status"></p>
+      </div>
+      <div class="form-wrap" id="repBox" style="display:none">
+        <h3>Signalement</h3>
+        <label for="rType">Type</label>
+        <select id="rType"><option value="erreur">Erreur</option><option value="fraude">Fraude</option></select>
+        <label for="rRef">Projet ou personne concernée (nom ou lien)</label>
+        <input id="rRef">
+        <label for="rDesc">Que s'est-il passé ?</label>
+        <textarea id="rDesc"></textarea>
+        <label for="rContact">Votre courriel ou téléphone (facultatif)</label>
+        <input id="rContact">
+        <div class="hero-actions"><button class="btn-primary" id="sendRep" type="button">Envoyer le signalement</button></div>
+        <p class="status" id="repStatus" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">Contact</div>
+        <h2>Écrivez-nous</h2>
+        <p>Remplissez le formulaire ou contactez-nous directement.</p>
+        <div class="hero-actions">
+          <a data-link="wa" class="btn btn-primary" target="_blank" rel="noopener">WhatsApp</a>
+          <a data-link="tel" class="btn btn-outline">📞 Appeler</a>
+          <a data-link="mail" class="btn btn-outline">✉️ Courriel</a>
+        </div>
+      </div>
+      <div class="form-wrap">
+        <form id="contactForm">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" type="text" required autocomplete="name">
+          <label for="email">Courriel</label>
+          <input id="email" name="email" type="email" required autocomplete="email">
+          <label for="sujet">Sujet</label>
+          <select id="sujet" name="sujet">
+            <option>Question</option>
+            <option>Demande</option>
+            <option>Avis</option>
+            <option>Autre</option>
+          </select>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+          <p class="notice">Ne partagez pas d'informations sensibles (mots de passe, numéros bancaires).</p>
+          <button type="submit" class="btn-primary">Envoyer</button>
+          <p class="status" id="status" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">FAQ</div>
+        <h2>Questions fréquentes</h2>
+      </div>
+      <details><summary>Qu'est-ce que ZELVET ?</summary><p>ZELVET est une plateforme de financement participatif qui permet de soutenir des projets en Haïti, pour une personne ou un groupe.</p></details>
+      <details><summary>Quand la plateforme sera-t-elle disponible ?</summary><p>ZELVET est en préparation. Écrivez-nous pour être informé(e) dès le lancement.</p></details>
+      <details><summary>Comment vous joindre ?</summary><p>Utilisez le formulaire de contact ci-dessus, nous répondons dans les meilleurs délais.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-row">
+    <div>
+      <strong>ZELVET</strong>
+      <p class="small">Un tout nouveau monde s'offre à vous.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#aide">Aide</a>
+      <a href="#faq">FAQ</a>
+      <a href="#reglement">Règlement</a>
+      <a href="#securite">Sécurité</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="container social">
+    <a data-link="facebook" target="_blank" rel="noopener">Facebook</a>
+    <a data-link="tiktok" target="_blank" rel="noopener">TikTok</a>
+  </div>
+  <div class="container"><p class="small">© <span id="year"></span> ZELVET. Tous droits réservés.</p></div>
+</footer>
+
+<div class="fab-wrap">
+  <a data-link="wa" class="fab wa" target="_blank" rel="noopener">💬 WhatsApp</a>
+  <a data-link="tel" class="fab call">📞 Appeler</a>
+</div>
+<button class="to-top" id="topBtn" aria-label="Retour en haut">↑</button>
+
+<script>
+/* ===== MODIFIEZ ICI VOS INFORMATIONS ===== */
+const CONTACT={
+  whatsapp:"509XXXXXXXX",
+  phone:"+509XXXXXXXX",
+  email:"contact@exemple.com",
+  facebook:"https://facebook.com/",
+  tiktok:"https://tiktok.com/"
+};
+/* ========================================= */
+const SUPABASE_URL="https://suqmapkxtlldofuijcms.supabase.co";
+const SUPABASE_KEY="sb_publishable_iYHNK6f-ID3Ru2tthSDA5w_lTAFoXAS";
+const L={wa:"https://wa.me/"+CONTACT.whatsapp,tel:"tel:"+CONTACT.phone,mail:"mailto:"+CONTACT.email,facebook:CONTACT.facebook,tiktok:CONTACT.tiktok};
+document.querySelectorAll('[data-link]').forEach(a=>a.href=L[a.dataset.link]);
+const topBtn=document.getElementById('topBtn');
+window.addEventListener('scroll',()=>topBtn.classList.toggle('show',scrollY>500));
+topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+const btn=document.getElementById('menuBtn'),nav=document.getElementById('nav');
+btn.addEventListener('click',()=>{const o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');btn.setAttribute('aria-expanded',false)}));
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('contactForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=e.target,st=document.getElementById('status'),b=f.querySelector('button');
+  b.disabled=true;st.textContent='Envoi en cours…';
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/messages',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({nom:f.nom.value,email:f.email.value,sujet:f.sujet.value,message:f.message.value})});
+    if(!r.ok)throw new Error(r.status);
+    st.textContent='Merci ! Votre message a bien été envoyé.';f.reset();
+  }catch(err){st.textContent='Désolé, l’envoi a échoué. Réessayez ou contactez-nous par WhatsApp.';}
+  b.disabled=false;
+});
+
+/* ===== SUPABASE : projets, compte, dons ===== */
+const API=SUPABASE_URL+'/rest/v1',AUTH=SUPABASE_URL+'/auth/v1',$=id=>document.getElementById(id);
+let session=null;
+try{session=JSON.parse(localStorage.getItem('zv_session')||'null')}catch(e){}
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hdr=a=>{const h={apikey:SUPABASE_KEY,'Content-Type':'application/json'};if(a&&session)h.Authorization='Bearer '+session.access_token;return h};
+const money=(n,d)=>Number(n).toLocaleString('fr-FR')+' '+d;
+async function loadProjects(){
+  try{
+    const r=await fetch(API+'/projets_publics?select=*&order=created_at.desc',{headers:hdr(false)});
+    if(!r.ok)throw 0;
+    const list=await r.json();
+    $('projStatus').textContent=list.length?'Choisissez un projet à soutenir. Le paiement en ligne sera bientôt disponible.':'Aucun projet pour le moment. Revenez bientôt !';
+    $('projList').innerHTML=list.map(p=>{
+      const pct=Math.min(100,Math.round(p.total_collecte/p.objectif*100));
+      return '<div class="card"><h3>'+esc(p.titre)+'</h3><p>'+esc(p.resume)+'</p><div class="bar"><i style="width:'+pct+'%"></i></div><p><strong>'+money(p.total_collecte,p.devise)+'</strong> sur '+money(p.objectif,p.devise)+' · '+p.nb_dons+' don(s)</p><form class="don" data-id="'+esc(p.id)+'"><input name="montant" type="number" min="1" step="any" placeholder="Montant" required><input name="nom" placeholder="Votre nom (facultatif)"><button class="btn-primary" type="submit">Soutenir</button></form><p class="small status"></p></div>';
+    }).join('');
+  }catch(e){$('projStatus').textContent='Impossible de charger les projets pour le moment.'}
+}
+$('projList').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const f=e.target,st=f.nextElementSibling;
+  try{
+    const r=await fetch(API+'/donations',{method:'POST',headers:{...hdr(true),Prefer:'return=minimal'},body:JSON.stringify({project_id:f.dataset.id,montant:Number(f.montant.value),nom_donateur:f.nom.value||null})});
+    if(!r.ok)throw 0;
+    st.textContent='Merci ! Votre intention de don est enregistrée (en attente de confirmation).';f.reset();
+  }catch(err){st.textContent='Échec de l’enregistrement. Réessayez.'}
+});
+function setUI(){
+  $('authBox').style.display=session?'none':'block';
+  $('projBox').style.display=session?'block':'none';
+  if(session)$('who').textContent='Connecté : '+session.user.email;
+}
+function saveSession(d){
+  session={access_token:d.access_token,user:{id:d.user.id,email:d.user.email}};
+  try{localStorage.setItem('zv_session',JSON.stringify(session))}catch(e){}
+  setUI();
+}
+async function authCall(path,body,st){
+  st.textContent='Un instant…';
+  try{
+    const r=await fetch(AUTH+path,{method:'POST',headers:hdr(false),body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.msg||d.error_description||d.message||'Erreur');
+    return d;
+  }catch(err){st.textContent='Erreur : '+err.message;return null}
+}
+$('btnLogin').addEventListener('click',async()=>{
+  const d=await authCall('/token?grant_type=password',{email:$('aEmail').value,password:$('aPass').value},$('aStatus'));
+  if(d&&d.access_token){$('aStatus').textContent='';saveSession(d)}
+});
+$('btnSignup').addEventListener('click',async()=>{
+  const d=await authCall('/signup',{email:$('aEmail').value,password:$('aPass').value,data:{nom:$('aNom').value}},$('aStatus'));
+  if(!d)return;
+  if(d.access_token){$('aStatus').textContent='';saveSession(d)}
+  else $('aStatus').textContent='Compte créé. Vérifiez votre courriel pour confirmer, puis connectez-vous.';
+});
+$('btnOut').addEventListener('click',()=>{session=null;try{localStorage.removeItem('zv_session')}catch(e){}setUI()});
+$('btnProj').addEventListener('click',async()=>{
+  const st=$('pStatus');
+  if(!$('pTitre').value||!$('pObj').value){st.textContent='Titre et objectif requis.';return}
+  try{
+    const r=await fetch(API+'/projects',{method:'POST',headers:{...hdr(true),Prefer:'return=minimal'},body:JSON.stringify({owner_id:session.user.id,titre:$('pTitre').value,resume:$('pResume').value,histoire:$('pHist').value,objectif:Number($('pObj').value),devise:$('pDev').value,date_limite:$('pDate').value||null,statut:'en_attente'})});
+    if(r.status===401){$('btnOut').click();$('aStatus').textContent='Session expirée, reconnectez-vous.';return}
+    if(!r.ok)throw 0;
+    st.textContent='Projet soumis ! Il sera publié après vérification.';
+    ['pTitre','pResume','pHist','pObj','pDate'].forEach(i=>$(i).value='');
+  }catch(err){st.textContent='Échec de l’envoi. Réessayez.'}
+});
+setUI();loadProjects();
+
+/* ===== SECURITE : remboursement, erreur/fraude ===== */
+function showBox(id){['remBox','repBox'].forEach(b=>$(b).style.display=b===id?'block':'none');$(id).scrollIntoView({behavior:'smooth',block:'center'})}
+$('btnRem').addEventListener('click',()=>showBox('remBox'));
+$('btnErr').addEventListener('click',()=>{$('rType').value='fraude';showBox('repBox')});
+async function sendForm(table,body,st,ok){
+  try{
+    const r=await fetch(API+'/'+table,{method:'POST',headers:{...hdr(true),Prefer:'return=minimal'},body:JSON.stringify(body)});
+    if(!r.ok)throw 0;
+    st.textContent=ok;return true;
+  }catch(e){st.textContent='Échec de l’envoi. Réessayez ou contactez-nous par WhatsApp.';return false}
+}
+$('sendRem').addEventListener('click',async()=>{
+  const st=$('remStatus');
+  if(!$('mEmail').value||!$('mRef').value||!$('mRaison').value){st.textContent='Courriel, référence et raison requis.';return}
+  const done=await sendForm('remboursements',{email:$('mEmail').value,reference:$('mRef').value,montant:$('mMont').value?Number($('mMont').value):null,raison:$('mRaison').value},st,'Demande envoyée. Nous l’examinerons et vous répondrons.');
+  if(done)['mEmail','mRef','mMont','mRaison'].forEach(i=>$(i).value='');
+});
+$('sendRep').addEventListener('click',async()=>{
+  const st=$('repStatus');
+  if(!$('rDesc').value){st.textContent='Décrivez la situation.';return}
+  const done=await sendForm('signalements',{type:$('rType').value,reference:$('rRef').value||null,description:$('rDesc').value,contact:$('rContact').value||null},st,'Signalement envoyé. Merci de nous aider à protéger la communauté.');
+  if(done)['rRef','rDesc','rContact'].forEach(i=>$(i).value='');
+});
+
+const regDlg=$('regDlg');
+$('regOpen').addEventListener('click',()=>regDlg.showModal());
+$('regClose').addEventListener('click',()=>regDlg.close());
+regDlg.addEventListener('click',e=>{if(e.target===regDlg)regDlg.close()});
+document.querySelectorAll('a[href="#reglement"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();regDlg.showModal()}));
+</script>
+</body>
+                                                                                    </html>
