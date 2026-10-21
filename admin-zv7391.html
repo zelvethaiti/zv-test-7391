@@ -1,1 +1,110 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ZELVET Admin</title>
+<style>
+:root{--bg:#0a0a0a;--panel:#14130f;--gold:#d4af37;--green:#1fa564;--red:#d9534f;--text:#f6f1e3;--muted:#b5ad98;--border:#3a3118;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5;padding:16px}
+h1{color:var(--gold);font-size:1.4rem;margin:0 0 12px}
+input,button{font:inherit}
+input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#0f0e0a;color:var(--text);margin:6px 0}
+button{cursor:pointer;border:0;border-radius:10px;padding:9px 12px;font-weight:700;background:var(--gold);color:#0a0a0a}
+button.g{background:var(--green);color:#fff}
+button.r{background:var(--red);color:#fff}
+button.o{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.wrap{max-width:900px;margin:auto}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tabs button{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.tabs button.on{border-color:var(--gold);color:var(--gold)}
+.item{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+.item h3{margin:0 0 4px;font-size:1rem}
+.item p{margin:4px 0;color:var(--muted);font-size:.88rem;word-break:break-word}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;border:1px solid var(--gold);color:var(--gold);font-size:.75rem;margin-bottom:6px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+#msg{color:#3fd18a;min-height:1.4em}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>ZELVET · Administration</h1>
+<div id="login">
+  <input id="em" type="email" placeholder="Courriel administrateur" autocomplete="email">
+  <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password">
+  <button id="go" type="button">Se connecter</button>
+</div>
+<div id="app" style="display:none">
+  <button class="o" id="out" type="button">Déconnexion</button>
+  <div class="tabs" id="tabs"></div>
+  <div id="list">Chargement…</div>
+</div>
+<p id="msg" role="status"></p>
+</div>
+<script>
+const SUPABASE_URL="https://suqmapkxtlldofuijcms.supabase.co";
+const SUPABASE_KEY="sb_publishable_iYHNK6f-ID3Ru2tthSDA5w_lTAFoXAS";
+const API=SUPABASE_URL+'/rest/v1',AUTH=SUPABASE_URL+'/auth/v1',$=id=>document.getElementById(id);
+let token=null,tab='projects';
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const H=()=>({apikey:SUPABASE_KEY,'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})});
+const say=t=>$('msg').textContent=t;
+const TABS={projects:'Projets',donations:'Dons',signalements:'Signalements',remboursements:'Remboursements',profiles:'Utilisateurs'};
+const QS={
+ projects:'/projects?select=*&order=created_at.desc',
+ donations:'/donations?select=*,projects(titre)&order=created_at.desc',
+ signalements:'/signalements?select=*&order=created_at.desc',
+ remboursements:'/remboursements?select=*&order=created_at.desc',
+ profiles:'/profiles?select=*&order=created_at.desc'
+};
+const btn=(fn,id,key,val,label,cls)=>'<button class="'+cls+'" data-fn="'+fn+'" data-id="'+esc(id)+'" data-key="'+key+'" data-val="'+esc(val)+'">'+label+'</button>';
+const CARD={
+ projects:p=>'<span class="tag">'+esc(p.statut)+'</span><h3>'+esc(p.titre)+'</h3><p>'+esc(p.resume)+'</p><p>'+esc(p.histoire)+'</p><p>Objectif : '+esc(p.objectif)+' '+esc(p.devise)+' · Créateur : '+esc(p.owner_id)+'</p><div class="acts">'+btn('admin_projet',p.id,'new_statut','actif','Approuver','g')+btn('admin_projet',p.id,'new_statut','refuse','Refuser','o')+btn('admin_projet',p.id,'new_statut','termine','Terminé','o')+btn('admin_projet',p.id,'new_statut','banni','Bannir','r')+'</div>',
+ donations:d=>'<span class="tag">'+esc(d.statut)+'</span><h3>'+esc(d.montant)+' · '+esc(d.projects&&d.projects.titre)+'</h3><p>Donateur : '+esc(d.nom_donateur||'anonyme')+'</p><div class="acts">'+btn('admin_don',d.id,'new_statut','confirme','Confirmer','g')+btn('admin_don',d.id,'new_statut','echoue','Échoué','r')+'</div>',
+ signalements:s=>'<span class="tag">'+esc(s.type)+' · '+esc(s.statut)+'</span><p>Concerne : '+esc(s.reference||'—')+'</p><p>'+esc(s.description)+'</p><p>Contact : '+esc(s.contact||'—')+'</p><div class="acts">'+btn('admin_signalement',s.id,'new_statut','traite','Traité','g')+btn('admin_signalement',s.id,'new_statut','rejete','Rejeter','o')+'</div>',
+ remboursements:r=>'<span class="tag">'+esc(r.statut)+'</span><h3>'+esc(r.reference)+'</h3><p>'+esc(r.email)+' · Montant : '+esc(r.montant||'—')+'</p><p>'+esc(r.raison)+'</p><div class="acts">'+btn('admin_remboursement',r.id,'new_statut','approuve','Approuver','g')+btn('admin_remboursement',r.id,'new_statut','refuse','Refuser','o')+btn('admin_remboursement',r.id,'new_statut','paye','Payé','o')+'</div>',
+ profiles:u=>'<span class="tag">'+(u.banni?'BANNI':'actif')+'</span><h3>'+esc(u.nom||'(sans nom)')+'</h3><p>'+esc(u.id)+'</p><div class="acts">'+(u.banni?btn('admin_banni',u.id,'val','false','Réactiver','g'):btn('admin_banni',u.id,'val','true','Bannir (bloque aussi ses projets)','r'))+'</div>'
+};
+function renderTabs(){$('tabs').innerHTML=Object.keys(TABS).map(k=>'<button data-tab="'+k+'" class="'+(k===tab?'on':'')+'">'+TABS[k]+'</button>').join('')}
+async function load(){
+  renderTabs();$('list').textContent='Chargement…';
+  try{
+    const r=await fetch(API+QS[tab],{headers:H()});
+    if(r.status===401){logout();say('Session expirée.');return}
+    if(!r.ok)throw 0;
+    const rows=await r.json();
+    $('list').innerHTML=rows.length?rows.map(x=>'<div class="item">'+CARD[tab](x)+'</div>').join(''):'<p>Rien à afficher.</p>';
+  }catch(e){$('list').textContent='Erreur de chargement.'}
+}
+function logout(){token=null;$('app').style.display='none';$('login').style.display='block'}
+$('tabs').addEventListener('click',e=>{const t=e.target.dataset.tab;if(t){tab=t;load()}});
+$('list').addEventListener('click',async e=>{
+  const b=e.target.closest('button[data-fn]');if(!b)return;
+  const key=b.dataset.key,val=key==='val'?b.dataset.val==='true':b.dataset.val;
+  const body=b.dataset.fn==='admin_banni'?{uid:b.dataset.id,val}:{rid:b.dataset.id,[key]:val};
+  if(!confirm('Confirmer cette action ?'))return;
+  try{
+    const r=await fetch(API+'/rpc/'+b.dataset.fn,{method:'POST',headers:H(),body:JSON.stringify(body)});
+    if(!r.ok)throw 0;
+    say('Action effectuée.');load();
+  }catch(err){say('Action refusée ou échouée.')}
+});
+$('out').addEventListener('click',logout);
+$('go').addEventListener('click',async()=>{
+  say('Connexion…');
+  try{
+    const r=await fetch(AUTH+'/token?grant_type=password',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:$('em').value,password:$('pw').value})});
+    const d=await r.json();
+    if(!r.ok)throw 0;
+    token=d.access_token;
+    const a=await fetch(API+'/rpc/is_admin',{method:'POST',headers:H(),body:'{}'});
+    if(!a.ok||(await a.json())!==true){token=null;say('Ce compte n’est pas administrateur.');return}
+    $('pw').value='';say('');$('login').style.display='none';$('app').style.display='block';load();
+  }catch(e){say('Connexion échouée.')}
+});
+</script>
+</body>
+</html>
